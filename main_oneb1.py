@@ -150,7 +150,7 @@ def doing_stuff(b):
         #in this way we might have coral hardware work on current photo (see that 'pic-1' a few lines above)
         logger.info("Loop {} photo saved with photo number {}".format(i,pic))
         pic +=1
-        if pic%3==0 and not earth_nightime:
+        if i>=3 and i%3==0 and not earth_nightime:
             sleep(short_delay)
         else:
             sleep(long_delay)# reduce sleep time to get more photos
