@@ -34,7 +34,7 @@ def sun_position(la, lon, eph):
 
     ts = load.timescale()
     t = ts.now()
-    planets = load('de440s.bsp')
+    planets = eph
     earth, sun = planets['earth'], planets['sun']
     ground_point = earth + wgs84.latlon(la,lon)
     astrometric = ground_point.at(t).observe(sun)
