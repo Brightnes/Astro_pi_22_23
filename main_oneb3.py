@@ -13,6 +13,7 @@ from pathlib import Path
 from datetime import datetime, timedelta
 from time import sleep
 import csv
+import os
 from logzero import logger, logfile
 from orbit import ISS
 from skyfield.api import load, wgs84
@@ -28,7 +29,7 @@ pic=1 # For photo numbering purpose
 
 # Function definitions
 
-def sun_position(la, lon):
+def sun_position(la, lon, eph):
     """ This function computes altitude and azimuth of the sun; it's for guessing at reflection geometric conditions from sea surface"""
 
     ts = load.timescale()
@@ -72,6 +73,9 @@ def create_csv(data_file):
         writer = csv.writer(f)
         header = ("Date/time", "Loop number", "Pic number", "earth_nightime", "Mag field x", "Mag field y","Mag field z", "Latitude", "Longitude", "North direction", "Sun altitude", "Sun azimuth")
         writer.writerow(header)
+        f.flush()
+        os.fsync(f.fileno())
+        f.close()
 
 
 def add_csv_data(data_file, data):
@@ -79,7 +83,9 @@ def add_csv_data(data_file, data):
     with open(data_file, 'a', buffering=1) as f:
         writer = csv.writer(f)
         writer.writerow(data)
-        
+        f.flush()
+        os.fsync(f.fileno())
+        f.close()
 
 def convert(angle):
     """
@@ -111,9 +117,9 @@ def capture(camera, im):
     camera.capture(im)
 
 
-def doing_stuff(b):
+def doing_stuff(b, ephe):
     """ This function does all the main work: it saves one data row and a photo; b is a boolean about shadowing condition of Earth."""
-    global i, pic, wavy_clouds_in_photo
+    global i, pic
     try:
         logger.info(f"Loop number {i} started")
         location = ISS.coordinates()
@@ -134,7 +140,7 @@ def doing_stuff(b):
 
        
         logger.info("Loop {} mag values rounded to 0.001".format(i))
-        sun_altitude, sun_azimuth = sun_position(lat,long)
+        sun_altitude, sun_azimuth = sun_position(lat,long, ephe)
         logger.info("Loop {} sun alt-az coordinates computed".format(i))
        
         
@@ -183,7 +189,7 @@ while (now_time < start_time + timedelta(minutes=176)):# properly edit timedelta
     
     # Camera warm-up time
     sleep(2)
-    doing_stuff(earth_nightime )#earth_nightime value is needed because it must be added to the csv data file
+    doing_stuff(earth_nightime, ephemeris)#earth_nightime value is needed because it must be added to the csv data file
     sleep(1)
     
     # Update the current time
