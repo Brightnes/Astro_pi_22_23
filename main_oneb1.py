@@ -12,6 +12,7 @@ from pathlib import Path
 from datetime import datetime, timedelta
 from time import sleep
 import csv
+import os
 from logzero import logger, logfile
 from orbit import ISS
 from skyfield.api import load, wgs84
@@ -74,6 +75,9 @@ def create_csv(data_file):
         writer = csv.writer(f)
         header = ("Date/time", "Loop number", "Pic number", "earth_nightime", "Mag field x", "Mag field y","Mag field z", "Latitude", "Longitude", "North direction", "Sun altitude", "Sun azimuth")
         writer.writerow(header)
+        f.flush()
+        os.fsync(f.fileno())
+        f.close()
 
 
 def add_csv_data(data_file, data):
@@ -81,6 +85,9 @@ def add_csv_data(data_file, data):
     with open(data_file, 'a', buffering=1) as f:
         writer = csv.writer(f)
         writer.writerow(data)
+        f.flush()
+        os.fsync(f.fileno())
+        f.close()
         
 
 def convert(angle):
@@ -115,7 +122,7 @@ def capture(camera, im):
 
 def doing_stuff(b, ephe):
     """ This function does all the main work: it saves one data row and a photo; b is a boolean about shadowing condition of Earth."""
-    global i, pic, wavy_clouds_in_photo
+    global i, pic
     try:
         logger.info(f"Loop number {i} started")
         location = ISS.coordinates()
