@@ -6,7 +6,6 @@ The program gets magnetic field data, photos.
 Some data about apparent position of the sun and direction with respect to N is computed and recorded.
 In case of darkness, photos are not deleted, they are overwritten instead.
 One loop every 25 seconds or so.
-13/1/23 modificato: non registra l'accelerazione
 """
 
 from sense_hat import SenseHat
@@ -180,7 +179,7 @@ start_time = datetime.now()
 now_time = datetime.now()
 # Run a loop for 2 minutes
 
-while (now_time < start_time + timedelta(minutes=5)):# properly edit timedelta value
+while (now_time < start_time + timedelta(minutes=176)):# properly edit timedelta value
     
     # Camera warm-up time
     sleep(2)
