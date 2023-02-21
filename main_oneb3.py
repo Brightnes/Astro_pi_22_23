@@ -24,7 +24,6 @@ import PIL.Image
 
 # Variable definitions and settings
 earth_nightime="Null"# A silly value initialization
-wavy_clouds_in_photo="Null"# A silly value initialization
 i=1 # For loop numbering purpose
 pic=1 # For photo numbering purpose
 
