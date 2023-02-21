@@ -30,12 +30,12 @@ long_delay=25
 
 # Function definitions
 
-def sun_position(la, lon):
+def sun_position(la, lon, eph):
     """ This function computes altitude and azimuth of the sun; it's for guessing at reflection geometric conditions from sea surface"""
 
     ts = load.timescale()
     t = ts.now()
-    planets = load('de440s.bsp')
+    planets = eph
     earth, sun = planets['earth'], planets['sun']
     ground_point = earth + wgs84.latlon(la,lon)
     astrometric = ground_point.at(t).observe(sun)
@@ -113,7 +113,7 @@ def capture(camera, im):
     camera.capture(im)
 
 
-def doing_stuff(b):
+def doing_stuff(b, ephe):
     """ This function does all the main work: it saves one data row and a photo; b is a boolean about shadowing condition of Earth."""
     global i, pic, wavy_clouds_in_photo
     try:
@@ -189,7 +189,7 @@ while (now_time < start_time + timedelta(minutes=176)):# properly edit timedelta
     # Camera warm-up time
     if i==1:
         sleep(2)
-    doing_stuff(earth_nightime )#earth_nightime value is needed because it must be added to the csv data file
+    doing_stuff(earth_nightime, ephemeris)#earth_nightime value is needed because it must be added to the csv data file
     #sleep(1)
     
     # Update the current time
