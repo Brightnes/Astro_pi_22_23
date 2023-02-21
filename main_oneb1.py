@@ -170,8 +170,8 @@ logfile(base_folder/"events.log")
 create_csv(data_file)
 ephemeris = load('de440s.bsp')
 timescale = load.timescale()
-#camera.resolution=camera.MAX_RESOLUTION# Give this instruction a try
-camera.resolution=(2592,1944)#use this instruction with old version V2 camera
+camera.resolution=camera.MAX_RESOLUTION# Give this instruction a try
+#camera.resolution=(2592,1944)#use this instruction with old version V2 camera
 camera.framerate = 15
 
 
@@ -184,7 +184,7 @@ start_time = datetime.now()
 now_time = datetime.now()
 # Run a loop for 2 minutes
 
-while (now_time < start_time + timedelta(minutes=5)):# properly edit timedelta value
+while (now_time < start_time + timedelta(minutes=176)):# properly edit timedelta value
     
     # Camera warm-up time
     if i==1:
